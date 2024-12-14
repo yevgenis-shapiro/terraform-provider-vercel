@@ -31,42 +31,26 @@ $ terraform init -migrate-state
 $ terraform plan
 ```
 
-## Prerequisites
+## Vercel Project
 First setup the zone in Cloudflare
 ```
 terraform init
 terraform apply -target cloudflare_zone.lexdsolutions
 ```
 
+## Vercel Environment Variables
 DNS is required to be hosted by Cloudflare. I need to migrate my existing records from AWS Route53 to Cloudflare.
 
  - Manually port records over to Cloudflare DNS
  - Update DNS registrar to use Cloudflare Name Servers
  - Ensure Top Level domain (lexdsolutions.com) record is **proxied** through CloudFlare
 
-## Deploy Remaining CloudFlare Configuration
+## Vercel Deploy the site
 This Terraform IaC will configure the remaining settings for this zone, such as enabling cache, WAF and DDoS protections.
 
 ```
 terraform plan -out tfplan.out
 terraform apply tfplan.out
-```
-
-
-Default server: bob.ns.cloudflare.com
-Address: 2a06:98c1:50::ac40:2168#53
-> lexdsolutions.com  <------- query my record
-Server:         bob.ns.cloudflare.com
-Address:        173.245.59.104#53
-
-Name:   lexdsolutions.com
-Address: 104.21.51.90  <------- Take note of this record (can be any from this response)
-Name:   lexdsolutions.com
-Address: 172.67.177.252
-Name:   lexdsolutions.com
-Address: 2606:4700:3034::ac43:b1fc
-Name:   lexdsolutions.com
-Address: 2606:4700:3037::6815:335a
 ```
 
 Modify local `hostfile` with the following records for testing:
