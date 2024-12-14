@@ -31,20 +31,20 @@ $ terraform init -migrate-state
 $ terraform plan
 ```
 
-## Vercel Project
+### Vercel Project
 First setup the zone in Cloudflare
 ```
 terraform init
 terraform apply -target cloudflare_zone.lexdsolutions
 ```
 
-## Vercel Environment Variables
+### Vercel Environment Variables
 Environment variables can also be set here such as which version of NodeJS to be used, which version of Hugo to be used and etc
 
  - Manually configuration
 
 
-## Vercel Deploy the site
+### Vercel Deploy the site
 This Terraform IaC will configure the remaining settings for this zone, such as enabling cache, WAF and DDoS protections.
 
 ```
