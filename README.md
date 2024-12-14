@@ -39,11 +39,10 @@ terraform apply -target cloudflare_zone.lexdsolutions
 ```
 
 ## Vercel Environment Variables
-DNS is required to be hosted by Cloudflare. I need to migrate my existing records from AWS Route53 to Cloudflare.
+Environment variables can also be set here such as which version of NodeJS to be used, which version of Hugo to be used and etc
 
- - Manually port records over to Cloudflare DNS
- - Update DNS registrar to use Cloudflare Name Servers
- - Ensure Top Level domain (lexdsolutions.com) record is **proxied** through CloudFlare
+ - Manually configuration
+
 
 ## Vercel Deploy the site
 This Terraform IaC will configure the remaining settings for this zone, such as enabling cache, WAF and DDoS protections.
