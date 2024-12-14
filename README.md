@@ -7,14 +7,14 @@ Vercel provides the developer tools and cloud infrastructure to build, scale, an
 
 
 ## Configuration
-### Cloudflare
+### Providers
 The Cloudflare API key is used to authenticate into my account. Local environmental variable is used:
 ```
 echo 'export CLOUDFLARE_API_KEY="123"' >> ~/.bashrc.alex
 echo 'export CLOUDFLARE_EMAIL="myemail@domain.com"' >> ~/.bashrc.alex
 ```
 
-### Terraform Backend
+### Vercel Backend
 The Terraform state is stored in AWS S3 alongside with my other IaC.
 
 Note: When I first played with this Cloudflare provider, I was using a local state, but once I added the `backend.tf`, I had to run the following command to migrate my state over to S3. The following commands were used:
@@ -52,23 +52,7 @@ terraform plan -out tfplan.out
 terraform apply tfplan.out
 ```
 
-### Local Testing
-Due to the lag in DNS replication on the internet, to test the Cloudflare protections, I must modify my local `hostfile` to point to the CloudFlare's edge IPs for my DNS.
 
-First get the IP by quering CloudFlare Name Server
-```
-alex@LEXD-PC:~$ nslookup
-> server bob.ns.cloudflare.com  <------- Set to query Cloudflare
-Default server: bob.ns.cloudflare.com
-Address: 173.245.59.104#53
-Default server: bob.ns.cloudflare.com
-Address: 172.64.33.104#53
-Default server: bob.ns.cloudflare.com
-Address: 108.162.193.104#53
-Default server: bob.ns.cloudflare.com
-Address: 2606:4700:58::adf5:3b68#53
-Default server: bob.ns.cloudflare.com
-Address: 2803:f800:50::6ca2:c168#53
 Default server: bob.ns.cloudflare.com
 Address: 2a06:98c1:50::ac40:2168#53
 > lexdsolutions.com  <------- query my record
@@ -86,33 +70,4 @@ Address: 2606:4700:3037::6815:335a
 ```
 
 Modify local `hostfile` with the following records for testing:
-```
-104.21.51.90 lexdsolutions.com
-104.21.51.90 www.lexdsolutions.com
-```
 
-## Cloudflare Tunnel
-Background: Cloudflare tunnel allows me to selfhost my blog and not on AWS. Due to CGNAT limitation, I do not have a dedicated public IP available to use.
-
-Terraform is used to setup the tunnel and once it is setup:
- - Manually log onto Cloudflare dashboard
- - Look for the tunnel
- - Inside the configuration, it provides the command to run `cloudflared` as a container, for example:
-    ```
-    $ docker run -d --restart unless-stopped cloudflare/cloudflared:latest tunnel --no-autoupdate run --token abc123
-    ```
-
-<!-- BEGIN_TF_DOCS -->
-## Requirements
-
-| Name | Version |
-|------|---------|
-| <a name="requirement_cloudflare"></a> [cloudflare](#requirement\_cloudflare) | ~> 4.25.0 |
-| <a name="requirement_random"></a> [random](#requirement\_random) | 3.6.0 |
-
-## Providers
-
-| Name | Version |
-|------|---------|
-| <a name="provider_cloudflare"></a> [cloudflare](#provider\_cloudflare) | ~> 4.25.0 |
-| <a name="provider_random"></a> [random](#provider\_random) | 3.6.0 |
